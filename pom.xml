@@ -11,7 +11,7 @@
     <groupId>io.security</groupId>
     <artifactId>corespringsecurity</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>corespringsecurity</name>
+    <name>corespringsecurity-ajax</name>
     <description>Core Spring Security</description>
 
     <properties>
