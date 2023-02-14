@@ -3,6 +3,7 @@ package io.security.corespringsecurity.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.security.corespringsecurity.domain.AccountDto;
 import io.security.corespringsecurity.security.token.AjaxAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -27,13 +28,13 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
         if (!isAjax(request)) {
-            throw new IllegalStateException("Authentication is not supported");
+            throw new IllegalArgumentException("Authentication method not supported");
         }
 
         AccountDto accountDto = objectMapper.readValue(request.getReader(), AccountDto.class);
 
         if (accountDto.getUsername().isEmpty() || accountDto.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Username or Password is empty");
+            throw new AuthenticationServiceException("Username or Password not provided");
         }
 
         AjaxAuthenticationToken ajaxAuthenticationToken = new AjaxAuthenticationToken(accountDto.getUsername(), accountDto.getPassword());
